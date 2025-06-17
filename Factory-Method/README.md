@@ -136,7 +136,28 @@ New travel: Move passenger from point A to point B using train
 5. If there are many product that it seems not good to create a creator for every each of them, then you can couple some of them by using `switch`.
 6. If after all the subclasses initialization, the factory method become empty, you can make it abstract and if there's something left, you can make it as a default behavior.
 
-### Sources:
+##### Advantages
+
+- Decouple object creation from its usage
+- Easier to manage and scale as new type definition
+- Improve code maintainability
+- Promotes `Open/Closed` and `Single Responsibility` principles
+
+##### Drawbacks
+
+- Can introduce **unnecessary complexity**
+- May lead to large number of creator classes
+
+###### When to use?
+
+- **Database driver factory**: When switching between different db clients, PostgreSQL, MySQL, etc.
+- **UI component factory**: when building dynamic forms or UI elements
+- **Logger factory**: Depenfing on environment, log to file, console, or remote.
+- **Notification factory**: email, SMS, social media push notification bot services
+- **Parser factory**: XML, JSON, YAML parsers
+- **Game development**: enemies, items or character factory depending on level or environment.
+
+###### Sources:
 - [Factory Method](https://refactoring.guru/design-patterns/factory-method)
 - [Factory Method - Python example](https://refactoring.guru/design-patterns/factory-method/python/example)
 - [Factory Method - Go example](https://refactoring.guru/design-patterns/factory-method/go/example)
