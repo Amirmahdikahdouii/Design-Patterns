@@ -16,7 +16,7 @@ Generally design patterns are classified in 3 main class:
 
 - [Factory Method](./Factory-Method/README.md)
 
-# OOP basics
+## OOP basics
 
 Object Oriented Programming (OOP), is based on 4 pillars, concepts that differentiate it from other programming paradigms.
 
@@ -149,3 +149,147 @@ This principle also applies to **aggregation**, a more relaxed variant of compos
 - **Composition over inheritance:**
 
 ![Composition over inheritance](./assets/composition-over-inheritance.png)
+
+## Solid Principles
+
+Solid in the mnemonic for five design principles introduced by **Robert martin** to make softwares more unerstandable, maintainable and flexible for changes in future.
+
+> [!IMPORTANT]
+> As with everything in life, applying all these principls once at a time into a program might not be a good option, because it makes the code complicated as it was before. Knowing these principles and applying or use them base on your need in a program and software design, could be helpful and effective, so be a pragmatic and use them base on your needs!
+
+![Solid Principles](./assets/solid-principles.png)
+
+### 1. Single Responsibility Principle
+
+> **A class should have just one reason to change**
+
+Try to make every class responsible for a single part of the functionality provided by the software, then make that responsibility encapsulated entirely by a class.
+The main goal of this principle is to reduce complexity. 
+
+When your program is about 200 lines of code, you don't need this priniple, but as the program grow, and code design is getting bigger and more complicated as before, using this principle will help you manage different part of the application easily. When classes become so big that you can't remmember its details, and you have to crawl on code to find a specific funcationality, this principle is coming for help you and it will get your control over the code back to you.
+
+### 2. Open/Closed principle
+
+> **A class should be open for extention but close for modification**
+
+The main idea of this principle is to keep existing code from breaking when you implement a new feature.
+
+A class is *Open* if you can extend it, means make a new subclass from superclass and modify it as you want, add new methods based on your needs.
+A class is *Closed* if its 100% ready to be used by other classes, means it has a clear interface and it won't be changed in future.
+
+If a class is already developed, tested, reviewed and included in some framework or app, trying to change the code in the class it's risky, because it can cause of future issue in where it's used. Instead, its recommended that create a subclass from that class and implement new features in that, then use this subclass to avoid future issues.
+
+> [!CAUTION]
+> This principle isn't meant to be applied for all changes to a class. If a class has a bug, just go and fix it as soon as possible. Don't fix bugs in subclasses, the subclasses are not responsible of a parent issues.
+
+### 3. Liskov substitution principle
+
+- Where this principle come from?: [Link](https://refactoring.guru/liskov/dah)
+
+> **When extending a class, remeber that you should be able to pass the object of the subclass in place of objects of a parent class without breaking the client code**
+
+The behavior of the subclass should remain compatible with actual behavior of parent class. Means that if you're override an existing method from parent class, the default behavior of method should not be changed totally, and you have just extend the behavior.
+
+This subsitution princiiple is a set of checks that provide intergrity after changes on class, to avoid problems in future, where this class is used by codes and project that you haven't access to modify them.
+
+This principle has some checklist unlike any other principles, to help you extend your methods in a subclass:
+
+- [ ] Parameter types in a method of a subclass should match or be more abstract than parameter type of the superclass
+
+For example, if you have a method for feeding cats, lets say: `feed(Cat c)`, and you want to extend this method in a subclass you can do these:
+
+- **Good Option**: You can modify the type of parameter to a superclass of **Cat**, lets say `Animal`. So, your new modified method in subclass would be `feed(Animal a)`, and that won't raise any exception, Because the previous codes that pass an instance of `Cat`, would work here, because `Cat` is a subclass of a `Animal` superclass, and the new codes that pass any object that has the interface of `Animal`, would work here!
+
+- **Bad Option**: You limit the parameter type from `Cat` to a specific type of cats, lets say `BengalCat`. so the modified method is `feed(BengalCat c)`. This would raise exceptions because th Bengal cats could not implement the Cat interface, or if they can, the previous codes that pass `Cat` instances to this method, should all get modify! *(An impossible mission)*
+
+- [ ] The return type in a method of the subclass should match or be a subtype of a return type in of a method in superclass
+
+If you have a method to `buyCat(): Cat`, and you want to change the return type of it in a subclass, you have 2 options:
+
+- **Good Option**: You can modify the return type of this method like this `buyCat(): BengalCat`. This is a good modification, because `BengalCat` is a subclass of parent `Cat` class. The client code would not break because the Bengal Cat is still a Cat and modify its interface.
+
+- **Bad Option**: You can modify the return type like this: `buyCat(): Animal`. By doing this, the client code could face problems, because it doesn't know the return type is still a cat or it would face a bear? This is not a good implementation of this method in subclass, because it could raise exceptions in client code.
+
+- [ ] A method of a subclass shouldn't throw types of exceptions which the base method isn't expected to throw
+
+Types of exceptions should match or be the subtype of the ones that base method throw, because in client code, `try-catch` blocks expect some exceptions and if your new modified method return something else, it couldn't catch by the block and crash the entire application.
+
+- [ ] A subclass shouldn't strengthen pre-conditions
+
+As an example, if you get an `int` number as a prameter in a base method, you cannot modify a condition in a subclass to only get positive numbers, and throw exceptions if given number was negative, because the client code that pass negetive number to this method and it worked fine, now by using this subclass would break and crash. Because you throw an exception if given number was negative.
+
+- [ ] A subclass shouldn't weaken post-conditions
+
+If you have a class that works with database and it close connection after any method calling, and you create a subclass and break this rule, and keep the connection open after a method job done, for reusing it in next method calls, and client code doesn't know about this new rule and it not close the connection manually, after running application, the computer and database will have a ghost `(idle)` connection.
+
+- [ ] Invariant of a superclass must be preserved
+
+Invariant of a super class should get touch in subclass, because it may be used in different client codes, unit tests, methods and so on. If your class size is large, it's better not to touch invariant fields and methods even if they seems useless, Because maybe they're used by different methods or client codes and tests, that your change could cause unexpected issues. **The better choice is to declare new fields and methods and work with them.**
+
+- [ ] A subclass shouldn't change values of private fields of the super class
+
+In 2 next shots, we will face an bad design and good design of modify methods in a subclass for this check item:
+
+- Bad Design:
+
+![Bad Design](./assets/private-method-bad-design.png)
+
+- Good Design:
+
+![Good Design](./assets/private-method-good-design.png)
+
+### 4. Interface segregation principle
+
+> **Clients shouldn't be forced to depend on methods they do not use**
+
+According to the **interface segregation principle**, you have to break down fat interfaces into more granular and specific ones. Clients should implement only those methods that they really need. Otherwise a change in fat interface would break even clients that don't use the changed method. 
+
+> [!NOTE]
+> Class inheritance lets a class have just one superclass, but it doesn't limit the number of interfaces that the class can implement at the same time.
+> So there is no need to put tons of methods in a single interface, that are not really related to each other, instead you can segregate interfaces and group methods that are related to each other in a single interface.
+
+Below, we have an example of fat interface:
+
+![Fat interface](./assets/fat-interface.png)
+
+In this example, the **Dropbox provider** have to implement the unnecessary methods, and even it it declare it empty, it is not pretty enough. Now lets break down the interface to some little ones:
+
+![Segregated intefaces](./assets/segregated-fat-interface.png)
+
+By doing this, the *Dropbox provider* have to implement those methods that are only for storing data in cloud storage.
+
+> [!CAUTION]
+> Remember that the more interfaces you create, the more complex your code becomes, so keep the balance
+
+### 5. Dependency inversion principle
+
+> **High level classes shouldn't depend on low level classes. Both should depend on abstractions. Abstractions shouldn't depend on details. Details should depend on abstractions**
+
+Lets make our definition from high-level and low-level classes clearly:
+
+- **Low-Level classes** implement the basic operations such as *transfering data over network*, *working with a disk*, *connecting to the database*
+- **High-Level classes** contains complex business logic that directs low level classes to something
+
+Sometimes people start project by working on low level classes, because you're not sure what's possible at higher level, and after that start to build higher level classes.
+With such an approach business logic classes tend to become dependent on primitive low-level classes.
+
+The **Dependency Inversion Principle** suggest changing direction of this implementation!
+
+1. First, you have to implement the interface for low level classes. For example if you need a `saveDocument(x)` method, you have to declare this in low level class interface, because the high level class job is not to call these methods `openFile(x)`, `readBytes(n)` and `closeFile(x)`. 
+2. Now you can make high level class dependent on these implemented interfaces, instead of concrete low level classes. This dependency will become much softer than the origianl one.
+3. Once low-level classes implement these interfaces, they become dependent to the high-level class or business logic, and reversing the direction of the original dependency.
+
+> [!NOTE]
+> The dependency inversion goes along with **Open/Closed principle**: you can extend low level classes without breaking existing classes.
+
+Below is an example of high level class depends on low level class:
+
+![High level depends on low level class](./assets/high-level-classes-depends-on-low-level-classes.png)
+
+This dependency is not good, because if we want to switch our database, we have to make changes in `BudgetReport` class either.
+
+The dependency inversion principle recommend this implementation:
+
+![Low level classes depends on high level ones](./assets/low-level-classes-depends-on-high-level-classes.png)
+
+Now, If we want to use another database, we have just make its class that impelement the `Database` interface.
