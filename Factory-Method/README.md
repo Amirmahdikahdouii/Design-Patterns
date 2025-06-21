@@ -161,3 +161,7 @@ New travel: Move passenger from point A to point B using train
 - [Factory Method](https://refactoring.guru/design-patterns/factory-method)
 - [Factory Method - Python example](https://refactoring.guru/design-patterns/factory-method/python/example)
 - [Factory Method - Go example](https://refactoring.guru/design-patterns/factory-method/go/example)
+
+### Summary Up
+
+The factory method pattern, will help us make a base class to be used in the client code, and then define our business logics in different methods in that base class, **that will use an abstract product for working well**. We name this base class as `creator` and we will define the `factory method` as an abstract method or with a default behavior, to be override in subclasses, to return special type of product. This factory method will be used in different business logic methods for creating **(or even getting existing product from a storage or cache)** and call the methods that are defined in products interface. Note that all returned product must implement an interface of products, and by having this interface, as we create a new type of product, we don't need to change the business logic method, we have to just implement the product interface, and new creator subclass for our new product, to return the new product.
