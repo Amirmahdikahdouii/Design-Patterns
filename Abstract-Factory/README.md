@@ -58,3 +58,117 @@ Below, there is an example of implementing abstract method in some real world ap
 3. *Single responsibility principle*: You can extract the product creation code into one place
 4. *Open/Closed Principle*: You can add new variant for products without breaking existing code.
 5. The code may become complicated that it should be, since a lot of concrete classes with their interfaces are added to the code
+
+##### Abstract Factory vs Factory Method
+database system
+| **Feature** | **Abstract Factory** | **Factory Method** |
+| --- | --- | --- |
+| **Purpose** | Creating **families** of related object | Create **one type** of object |
+| **Structure** | Contains multiple factory methods | Contains a single factory method |
+| **Product Variety** | Produces multiple related products | Focus on creating a single product |
+| **Use Cases complexity** | More complex, involves object families | Simpler, single object creation |
+| **Example** | GUI toolkit for multiple OS (Mac, Windows, Linux) | Logger factory (FileLogger, DBLogger) |
+
+> [!NOTE]
+> As an example, imagine that you want to have a db for your application that you can have **CRUD** operations on db. First you define the interface and then use the **Factory Method** design pattern for your project. Why? Because you only have a single type of product that may be changes in future. But imagine that you want to have 2 database at a time in your application, that you want to have some database for storing logs. In this case, you add a new interface for your logger database, and then use **abstract factory** pattern for decouple your client code from database types, and provide **Open/Close** principle into your application.
+
+#### Real world example and use cases
+
+- **GUI library**: Create UI elements (Button, TextBox) for multiple platforms (Windows, Mac, Linux)
+- **Database drivers:** Generate DB connections, queries, and result readers for different databases
+- **Theme engines**: Create related components (text color, button style, icons) based on theme
+- **Game development**: Create families of enemy types depending on the game level or biome
+- **Notification System**: Create related message sender objects (EmailSender, SMSSender) depending on the communication channel
+
+```go
+package main
+
+import "fmt"
+
+// -------- Abstract Products --------
+type Button interface {
+ Render()
+}
+
+type TextBox interface {
+ Display()
+}
+
+// -------- Concrete Products --------
+type WinButton struct{}
+func (w *WinButton) Render() {
+ fmt.Println("Rendering Windows Button")
+}
+
+type MacButton struct{}
+func (m *MacButton) Render() {
+ fmt.Println("Rendering Mac Button")
+}
+
+type WinTextBox struct{}
+func (w *WinTextBox) Display() {
+ fmt.Println("Displaying Windows TextBox")
+}
+
+type MacTextBox struct{}
+func (m *MacTextBox) Display() {
+ fmt.Println("Displaying Mac TextBox")
+}
+
+// -------- Abstract Factory --------
+type GUIFactory interface {
+ CreateButton() Button
+ CreateTextBox() TextBox
+}
+
+// -------- Concrete Factories --------
+type WinFactory struct{}
+func (wf *WinFactory) CreateButton() Button {
+ return &WinButton{}
+}
+func (wf *WinFactory) CreateTextBox() TextBox {
+ return &WinTextBox{}
+}
+
+type MacFactory struct{}
+func (mf *MacFactory) CreateButton() Button {
+ return &MacButton{}
+}
+func (mf *MacFactory) CreateTextBox() TextBox {
+ return &MacTextBox{}
+}
+
+// -------- Client Code --------
+type Application struct {
+ button Button
+ textBox TextBox
+}
+
+func NewApplication(factory GUIFactory) *Application {
+ return &Application{
+  button: factory.CreateButton(),
+  textBox: factory.CreateTextBox(),
+ }
+}
+
+func (app *Application) RenderUI() {
+ app.button.Render()
+ app.textBox.Display()
+}
+
+// -------- Main --------
+func main() {
+ var factory GUIFactory
+
+ os := "mac" // change this to "win" to see other result
+
+ if os == "win" {
+  factory = &WinFactory{}
+ } else {
+  factory = &MacFactory{}
+ }
+
+ app := NewApplication(factory)
+ app.RenderUI()
+}
+```
