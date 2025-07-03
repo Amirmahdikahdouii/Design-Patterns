@@ -14,7 +14,17 @@ Generally design patterns are classified in 3 main class:
 
 ### Creational Patterns
 
-- [Factory Method](./Factory-Method/README.md)
+Creational patterns provide various object creation mechanisms, which increase flexibility and reuse of existing code.
+
+- [Factory Method](./Creational-Patterns/Factory-Method/README.md)
+- [Abstract Factory](./Creational-Patterns/Abstract-Factory/README.md)
+- [Builder](./Creational-Patterns/Builder/README.md)
+- [Prototype](./Creational-Patterns/Prototype/README.md)
+- [singleton](./Creational-Patterns/Singleton/README.md)
+
+### Structural Patterns
+
+Structural patterns explain how to assemble objects and classes into larger structures, while keeping this structures flexible and efficient.
 
 ## OOP basics
 
