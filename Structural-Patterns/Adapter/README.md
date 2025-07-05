@@ -43,3 +43,63 @@ Also there is an approach when in a programming language is allowed to have inhe
 5. One by one implement the client interface methods, the adaptor class should deligate most of the real work to the service object, handling only the interface implementation or data conversion
 6. Clients should use the adaptor via the client interface. This will decouple the client interface to the adaptor class.
 
+#### Pros
+
+- *Single Responsiblity Principle*, the data conversion is done outside of the business logic
+- *Open/Closed Principle*, you can modify new adaptors to be used by client code, without break the existing program, by modifying the client interface
+
+#### Cons
+
+- The overall complexity of existing code will be increase due to modifying new interfaces and classes. Sometimes is better to change the service class code, in order to use this pattern, to have less complexity.
+
+#### Use cases
+
+- You want to use an existing class, but the interface of that class is incompatible with your client interface
+- You want to use legacy code in your new system, without changing the original code
+- You're working with third-party library or API
+- You're integrating 2 subsystems that developed independently
+
+#### Example
+
+```go
+// Client interface
+type Logger interface {
+    Log(message string)
+}
+
+// 3rd-party library
+type ThirdPartyLogger struct{}
+func (l *ThirdPartyLogger) WriteLog(message string){
+    fmt.Printf("Third party logger: %s", message)
+}
+
+// Adaptor class
+type LoggerAdaptor struct {
+    // Adaptee
+    thirdPartyLogger *ThirdPartyLogger
+}
+
+func NewAdaptor() *LoggerAdaptor{
+    logger := &ThirdPartyLogger{}
+    return &LoggerAdaptor{
+        thirdPartyLogger: logger,
+    }
+}
+
+func (l *LoggerAdaptor) Log(message string){
+    l.thirdPartyLogger.WriteLog(message)
+}
+
+// Client code
+func main() {
+    var logger Logger
+    logger = NewAdaptor()
+    logger.Log("Hello world!")
+}
+```
+
+##### Real world example
+
+- **DataBase drivers**: Different DB clients implementing a common interface using Adaptor pattern
+- **Payment gateways**: Unifying different payment providers APIs into one internal interface
+
