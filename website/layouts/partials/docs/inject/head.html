@@ -1,0 +1,4 @@
+{{ with resources.Get "custom.css" }}
+  {{ $styles := . | resources.Minify }}
+  <link rel="stylesheet" href="{{ $styles.RelPermalink }}">
+{{ end }}

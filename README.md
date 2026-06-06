@@ -1,5 +1,9 @@
 # Design Patterns
 
+[![Published Site](https://img.shields.io/badge/docs-published-blue)](https://amirmahdikahdouii.github.io/Design-Patterns/)
+
+> **Reading options:** Browse this repository on the `master` branch for plain Markdown files, or visit the [published Hugo site](https://amirmahdikahdouii.github.io/Design-Patterns/) for a searchable documentation experience.
+
 In this repository that include `code + documents`, I share my study about design patterns and what I have found and learnd.
 
 Generally design patterns are classified in 3 main class:

@@ -1,0 +1,10 @@
+{{ with .Params.source_path }}
+<div class="raw-markdown-link">
+  <p>
+    View plain Markdown on GitHub:
+    <a href="{{ $.Site.Params.BookRepo }}/blob/master/{{ . }}" target="_blank" rel="noopener">
+      {{ . }}
+    </a>
+  </p>
+</div>
+{{ end }}

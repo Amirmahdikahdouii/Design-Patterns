@@ -1,1 +1,10 @@
 *.pdf
+
+# Hugo generated output
+website/public/
+website/content/
+website/resources/
+website/.hugo_build.lock
+website/hugo_stats.json
+website/themes/
+.cursor/

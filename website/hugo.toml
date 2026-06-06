@@ -1,0 +1,34 @@
+baseURL = "https://amirmahdikahdouii.github.io/Design-Patterns/"
+languageCode = "en-us"
+title = "Design Patterns"
+theme = "hugo-book"
+
+enableGitInfo = true
+canonifyURLs = true
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[markup.goldmark.extensions]
+  [markup.goldmark.extensions.extras]
+    [markup.goldmark.extensions.extras.alert]
+      enable = true
+  [markup.goldmark.extensions.passthrough]
+    enable = true
+    [markup.goldmark.extensions.passthrough.delimiters]
+      block = [['\[', '\]'], ['$$', '$$']]
+      inline = [['\(', '\)']]
+
+[params]
+  BookTheme = "auto"
+  BookSearch = true
+  BookSection = "docs"
+  BookRepo = "https://github.com/Amirmahdikahdouii/Design-Patterns"
+  BookEditPath = "edit/master"
+  BookPortableLinks = true
+
+[menu]
+  [[menu.main]]
+    name = "Published Site"
+    url = "https://amirmahdikahdouii.github.io/Design-Patterns/"
+    weight = 1

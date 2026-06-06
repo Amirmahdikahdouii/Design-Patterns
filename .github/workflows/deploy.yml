@@ -1,0 +1,53 @@
+name: Deploy Hugo site to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - '**.md'
+      - 'assets/**'
+      - 'Creational-Patterns/**'
+      - 'Structural-Patterns/**'
+      - 'Behavioral-Patterns/**'
+      - 'website/**'
+      - 'scripts/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.158.0'
+          extended: true
+
+      - name: Install Hugo Book theme
+        run: bash scripts/setup-theme.sh
+
+      - name: Sync content
+        run: bash scripts/sync-content.sh
+
+      - name: Build site
+        run: cd website && hugo --minify
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./website/public
+          publish_branch: gh-pages
